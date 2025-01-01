@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+</head>
+<body>
+    <h1>Electricity Bill Calculator</h1>
+
+    <!-- Form for user input -->
+    <form method="POST" action="">
+        <label for="consumption">Enter Electricity Consumption (kWh): </label>
+        <input type="number" name="consumption" id="consumption" required>
+        <br><br>
+
+        <label for="tariff">Select Tariff Type: </label>
+        <select name="tariff" id="tariff">
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+        </select>
+        <br><br>
+
+        <input type="submit" name="calculate" value="Calculate Bill">
+    </form>
+
+    <?php
+    // Tariff rates (you can change these as per your pricing structure)
+    $tariffs = [
+        'residential' => [
+            'rate1' => 0.12,  // First 100 kWh at $0.12 per kWh
+            'rate2' => 0.15,  // Next 200 kWh at $0.15 per kWh
+            'rate3' => 0.20   // Above 300 kWh at $0.20 per kWh
+        ],
+        'commercial' => [
+            'rate1' => 0.18,  // First 100 kWh at $0.18 per kWh
+            'rate2' => 0.22,  // Next 200 kWh at $0.22 per kWh
+            'rate3' => 0.30   // Above 300 kWh at $0.30 per kWh
+        ]
+    ];
+
+    if (isset($_POST['calculate'])) {
+        // Get user input
+        $consumption = $_POST['consumption'];
+        $tariff_type = $_POST['tariff'];
+
+        // Select the appropriate tariff
+        $tariff = $tariffs[$tariff_type];
+
+        // Initialize total bill amount
+        $total_bill = 0;
+
+        // Calculate bill based on consumption
+        if ($consumption <= 100) {
+            $total_bill = $consumption * $tariff['rate1'];
+        } elseif ($consumption <= 300) {
+            $total_bill = 100 * $tariff['rate1'] + ($consumption - 100) * $tariff['rate2'];
+        } else {
+            $total_bill = 100 * $tariff['rate1'] + 200 * $tariff['rate2'] + ($consumption - 300) * $tariff['rate3'];
+        }
+
+        // Display the result
+        echo "<h2>Total Electricity Bill: $" . number_format($total_bill, 2) . "</h2>";
+    }
+    ?>
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frames Example</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #floating-frame {
+            border: 1px solid #ccc;
+            width: 100%;
+            height: 300px;
+        }
+        #navigation {
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        #content {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Frames Example</h1>
+
+    <!-- Navigation Frame -->
+    <div id="navigation">
+        <h2>Navigation</h2>
+        <ul>
+            <li><a href="https://www.example.com" target="content-frame">Example 1</a></li>
+            <li><a href="https://www.wikipedia.org" target="content-frame">Wikipedia</a></li>
+            <li><a href="https://www.openai.com" target="content-frame">OpenAI</a></li>
+        </ul>
+    </div>
+
+    <!-- Mixed Frame: Navigation and Content -->
+    <div id="mixed-frame" style="display: flex; height: 400px;">
+        <div style="flex: 1; border-right: 1px solid #ccc;">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#section1" target="floating-frame">Section 1</a></li>
+                <li><a href="#section2" target="floating-frame">Section 2</a></li>
+                <li><a href="#section3" target="floating-frame">Section 3</a></li>
+            </ul>
+        </div>
+        <div style="flex: 2;">
+            <h2>Content</h2>
+            <iframe id="floating-frame" name="floating-frame" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <h2>Content for Floating Frame</h2>
+    <div style="display: none;">
+        <div id="section1">
+            <h3>Section 1</h3>
+            <p>shyama is matured 🤓️</p>
+        </div>
+        <div id="section2">
+            <h3>Section 2</h3>
+            <p>sandra is super cool😎️.</p>
+        </div>
+        <div id="section3">
+            <h3>Section 3</h3>
+            <p>jisna is like bakkbakkk🐣️.</p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to update the iframe content dynamically
+        document.querySelectorAll('#mixed-frame ul li a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+                const content = document.getElementById(sectionId).innerHTML;
+                const iframe = document.getElementById('floating-frame').contentWindow.document;
+                iframe.open();
+                iframe.write('<html><body>' + content + '</body></html>');
+                iframe.close();
+            });
+        });
+    </script>
+
+</body>
+</html>
+
